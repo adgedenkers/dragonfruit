@@ -1,126 +1,200 @@
--- Name: family_tracker.sql
--- Description: SQLite Database schema for a family tracking app
+-- Name: family_tracker_full.sql
+-- Description: Complete SQLite Database schema for a family tracking app
 -- Author: Adge Denkers / github.com/adgedenkers/
 -- Created: 2023-10-05
--- Updated: 2023-10-08
+-- Updated: 2023-10-09
 -- (C) 2023 denkers.co
-
 -- Enable Foreign Key Support
 PRAGMA foreign_keys = ON;
-
+-- user_profiles Table
 CREATE TABLE user_profiles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,   -- Unique identifier for each user profile
-    userName VARCHAR(255) NOT NULL UNIQUE,  -- User's username (non-null and unique)
-    namePrefix VARCHAR(255),                -- User's name prefix (e.g., Mr., Mrs.)
-    nameFirst VARCHAR(255) NOT NULL,        -- User's first name (non-null)
-    nameMiddle VARCHAR(255),                -- User's middle name
-    nameLast VARCHAR(255) NOT NULL,         -- User's last name (non-null)
-    nameSuffix VARCHAR(255),                -- User's name suffix
-    dob TEXT,                               -- User's date and time of birth (stored as text)
-    userPassword VARCHAR(255),              -- User's password (hashed)
-    email VARCHAR(255) NOT NULL,            -- User's email (non-null)
-    phone VARCHAR(10),                      -- User's phone number
-    address VARCHAR(255),                   -- User's address
-    city VARCHAR(255),                      -- User's city
-    state VARCHAR(2),                       -- User's state
-    zip VARCHAR(5),                         -- User's zip code
-    country VARCHAR(255),                   -- User's country
-    created_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')) NOT NULL -- Timestamp for when the profile was created
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  userName TEXT NOT NULL UNIQUE,
+  namePrefix TEXT,
+  nameFirst TEXT NOT NULL,
+  nameMiddle TEXT,
+  nameLast TEXT NOT NULL,
+  nameSuffix TEXT,
+  dob TEXT,
+  userPassword TEXT,
+  email TEXT NOT NULL,
+  phone TEXT,
+  address TEXT,
+  city TEXT,
+  state TEXT,
+  zip TEXT,
+  country TEXT,
+  created_at TEXT DEFAULT (
+    strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')
+  ) NOT NULL FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
--- Insert family data into the user_profiles table
-INSERT INTO user_profiles (userName, namePrefix, nameFirst, nameMiddle, nameLast, dob, email, phone, address, city, state, zip, country) VALUES
-('Adge', 'Mr.', 'Adriaan', 'Harold', 'Denkers', '1977-11-22 08:45:22.123-0500', 'adge.denkers@gmail.com', '607-226-0710', '304 Cosen Road', 'Oxford', 'NY', '13830', 'United States'),
-('Becky', 'Mrs.', 'Rebecca', 'Lydia', 'Denkers', '1978-08-19 14:02:33.123-0400', 'rebecca.denkers@gmail.com', '607-316-2604', '304 Cosen Road', 'Oxford', 'NY', '13830', 'United States'),
-('Fitz', 'Mr.', 'Adriaan', 'Fitzgerald', 'Denkers', '2010-09-008 14:39:11.123-0400', 'bonniegamer0812@gmail.com', '607-226-3077', '304 Cosen Road', 'Oxford', 'NY', '13830', 'United States');
-
-
--- Create the user_access table
+-- Insert Statements
+INSERT INTO
+  user_profiles (
+    user_id,
+    userName,
+    namePrefix,
+    nameFirst,
+    nameMiddle,
+    nameLast,
+    dob,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    zip,
+    country
+  )
+VALUES
+  (
+    1,
+    'Adge',
+    'Mr.',
+    'Adriaan',
+    'Harold',
+    'Denkers',
+    '1977-11-22T08:45:22-0500',
+    'adge.denkers@gmail.com',
+    '607-226-0710',
+    '304 Cosen Road',
+    'Oxford',
+    'NY',
+    '13830',
+    'United States'
+  ),
+  (
+    2,
+    'Becky',
+    'Mrs.',
+    'Rebecca',
+    'Lydia',
+    'Denkers',
+    '1978-08-19T14:02:33-0400',
+    'rebecca.denkers@gmail.com',
+    '607-316-2604',
+    '304 Cosen Road',
+    'Oxford',
+    'NY',
+    '13830',
+    'United States'
+  ),
+  (
+    3,
+    'Fitz',
+    'Mr.',
+    'Adriaan',
+    'Fitzgerald',
+    'Denkers',
+    '2010-09-08T14:39:11-0400',
+    'bonniegamer0812@gmail.com',
+    '607-226-3077',
+    '304 Cosen Road',
+    'Oxford',
+    'NY',
+    '13830',
+    'United States'
+  );
+-- user_access Table
 CREATE TABLE IF NOT EXISTS user_access (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    website_username VARCHAR(255),
-    website_password VARCHAR(255),
-    url VARCHAR(255),
-    active INTEGER DEFAULT 1,
-    quick_find_word VARCHAR(255)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  login_time DATETIME,
+  logout_time DATETIME,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
-
--- Insert initial records into the table
-INSERT INTO user_access (user_id, website_username, website_password, url, active, quick_find_word) VALUES
-(1, "bonniegamer0812@gmail.com", "pePgir-tifhoc-9hummo", "https://students.arbitersports.com/registrations/12365092/edit?vue=true", 1, "oxford/oxac/sports");
-
-
-
--- Create Medical Table for User's Basic Medical Data
+-- user_medical_info Table
 CREATE TABLE IF NOT EXISTS user_medical_info (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    blood_type VARCHAR(5),
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  blood_type TEXT,
+  allergies TEXT,
+  medical_conditions TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
-
-
-INSERT INTO TABLE user_medical_info (user_id, blood_type) VALUES (1, "O+"), (2, "A+"), (3, "");
-
-
-
--- Create Medication Groups Table
+-- med_groups Table
 CREATE TABLE IF NOT EXISTS med_groups (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    group_name TEXT,
-    schedule TEXT,
-    time_of_day TEXT
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  group_name TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
-
--- Create Medication Group Contents Table
+-- med_group_contents Table
 CREATE TABLE IF NOT EXISTS med_group_contents (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id INTEGER REFERENCES med_groups(id),
-    medication_id INTEGER REFERENCES meds(id)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  group_id INTEGER,
+  medication_id INTEGER,
+  FOREIGN KEY(group_id) REFERENCES med_groups(id),
+  FOREIGN KEY(medication_id) REFERENCES meds(id)
 );
-
--- Create User Medications Table
-CREATE TABLE IF NOT EXISTS user_meds (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    medication_id INTEGER REFERENCES meds(id)
-    dosage REAL
-);
-
--- Create Medications Table
+-- meds Table
 CREATE TABLE IF NOT EXISTS meds (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    prescription BOOLEAN DEFAULT 1,
-    user_id INTEGER REFERENCES user_profiles(id),
-    NDC TEXT,
-    medication TEXT,
-    brand_name TEXT,
-    strength REAL,
-    units TEXT,
-    format TEXT,
-    FOREIGN KEY (user_id) REFERENCES user_profiles(id)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  prescription BOOLEAN DEFAULT 1,
+  user_id INTEGER,
+  medication_name TEXT,
+  dosage TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
-
--- Create User Meds Scheduled Table
+-- user_meds Table
+CREATE TABLE IF NOT EXISTS user_meds (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  medication_id INTEGER,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id),
+  FOREIGN KEY(medication_id) REFERENCES meds(id)
+);
+-- user_meds_scheduled Table
 CREATE TABLE IF NOT EXISTS user_meds_scheduled (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    med_group_id INTEGER,
-    taken_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_profiles(id),
-    FOREIGN KEY (med_group_id) REFERENCES med_groups(id)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  med_group_id INTEGER,
+  time_to_take DATETIME,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id),
+  FOREIGN KEY(med_group_id) REFERENCES med_groups(id)
 );
-
--- Create User Meds Unscheduled Table
+-- user_meds_unscheduled Table
 CREATE TABLE IF NOT EXISTS user_meds_unscheduled (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user_profiles(id),
-    med_id INTEGER,
-    dosage REAL,
-    units TEXT,
-    reason TEXT,
-    taken_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_profiles(id),
-    FOREIGN KEY (med_id) REFERENCES meds(id)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  med_id INTEGER,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id),
+  FOREIGN KEY(med_id) REFERENCES meds(id)
+);
+-- appointments Table
+CREATE TABLE IF NOT EXISTS appointments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  appointment_name TEXT,
+  appointment_date DATETIME,
+  description TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
+);
+-- reminders Table
+CREATE TABLE IF NOT EXISTS reminders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  reminder_name TEXT,
+  reminder_date DATETIME,
+  description TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
+);
+-- tasks Table
+CREATE TABLE IF NOT EXISTS tasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  task_name TEXT,
+  due_date DATETIME,
+  status TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
+);
+-- chores Table
+CREATE TABLE IF NOT EXISTS chores (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  chore_name TEXT,
+  due_date DATETIME,
+  status TEXT,
+  FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
