@@ -10,10 +10,10 @@ st.set_page_config(
 
 def main():
     st.write(f"# Dragonfruit | ")
-    #t.sidebar.success("Select an Option")
+    st.sidebar.success("Select an Option")
     menu = ["Home", "Track Pain", "Track Meds", "Track Sleep", "Track Vitals", "Track Metrics", "About"]
-    choice = st.sidebar.selectbox("Menu", menu)
-    patient = st.sidebar.selectbox("User", ["Adge", "Becky", "Fitzy"])
+    choice = st.sidebar.selectbox("", menu)
+    patient = st.sidebar.selectbox("Tracking for", ["Adge", "Becky", "Fitzy"])
     you = "sir"
     
     if patient == "Becky":
@@ -47,7 +47,7 @@ def main():
             else:
                 common_pain_locations = ["lower back", "middle of back", "neck", "neck-headache", "headache"]
             
-            common_locations = st.multiselect(f"***{patient}*** Common Locations", common_pain_locations)
+            common_locations = st.multiselect(f"{patient}'s Common Pain Points", common_pain_locations, help="Select one or more from this list")
             st.write("If your pain is somewhere else, provide it in the `Location` field below.")
             location = st.text_input("Location")
             
