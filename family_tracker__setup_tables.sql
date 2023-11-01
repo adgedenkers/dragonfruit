@@ -198,3 +198,20 @@ CREATE TABLE IF NOT EXISTS chores (
   status TEXT,
   FOREIGN KEY(user_id) REFERENCES user_profiles(user_id)
 );
+
+-- SQL CREATE Statement for a robust log table
+CREATE TABLE LogTable (
+    LogID INTEGER PRIMARY KEY AUTOINCREMENT,
+    EventType VARCHAR(50) NOT NULL,
+    EventSubType VARCHAR(50),
+    EventDescription TEXT,
+    EventData JSON,
+    UserID INTEGER,
+    UserName VARCHAR(50),
+    IPAddress VARCHAR(50),
+    UserAgent VARCHAR(255),
+    EventTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    EventStartTimestamp DATETIME,
+    EventEndTimestamp DATETIME,
+    FOREIGN KEY(UserID) REFERENCES user_profiles(user_id)
+);
