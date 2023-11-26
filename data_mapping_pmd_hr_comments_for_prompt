@@ -1,0 +1,18 @@
+So lets talk about the data.
+
+The data can be normalized into essentialy 4 tables:
+1. organizations
+2. positions
+3. employees
+4. pds (position descriptions)
+
+An organization has a single supervisor for that organization. Every organizaton has 1 or more positions under it, and multiple leves deep .
+
+The data provided represents the employees in a single organization.
+
+Key Fields
+`organizations` pk = `dept_id`
+`positions` pk = `position_number` or sometimes called `HRSPOS` or `HRS_POS`
+`positions` secondary primary key `UPI` - a legacy ID that is still heavily in use across the organization. One `position_number` corresponds to one and only one `UPI` and the same is true in reverse. 
+`employees` pk = `employee_id` or sometimes called `HRSID` or `HRSEmpId` or `HRSEmp_ID` or `HRS_Emp_Id`
+`pds` pk = `posno` or `pd ftl`
