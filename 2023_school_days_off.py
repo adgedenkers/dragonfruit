@@ -18,7 +18,7 @@ school_days_off_list = [
     (date(2024,  1, 15), "Martin Luther King, Jr. Day", "Full Day"),
     (date(2024,  2, 19), "February Break", "Full Day"),
     (date(2024,  2, 20), "February Break", "Full Day"),
-    (date(2024,  2, 21), "February Break", "Full Day"),
+    (date(2024,  2, 21), "February Break", "Full Day"),1 cv  -c+++
     (date(2024,  2, 22), "February Break", "Full Day"),
     (date(2024,  2, 23), "February Break", "Full Day"),
     (date(2024,  3, 18), "Vacation Day", "Full Day"),
@@ -51,26 +51,3 @@ school_day_start = date(2023, 9, 7)
 school_day_end = date(2024, 7, 1)
 school_days_off = set(school_days_off_df['date'])  # Set for efficient membership testing
 
-# ... (rest of the script remains unchanged)
-
-# Iterate through the date range and populate the DataFrame
-# (Same iteration as previously, but with the following adjustments)
-
-    # School day attributes
-    school_open = int(school_day_start <= current_date <= school_day_end and not weekend)
-    if school_open:
-        if current_date not in school_days_off:
-            school_day = 1
-            school_ab_day = ab_day_flag
-            ab_day_flag = 'B' if ab_day_flag == 'A' else 'A'  # Alternate A/B days
-        else:
-            school_day = 0
-            school_ab_day = None  # Adjust for no school days
-    else:
-        school_day = 0
-        school_ab_day = None  # Adjust for no school days
-
-# ... (rest of the script remains unchanged)
-
-# Output the DataFrame
-# (Same output as previously)
