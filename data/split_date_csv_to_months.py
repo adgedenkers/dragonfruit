@@ -14,8 +14,8 @@ def split_dates_into_months(input_file, output_folder):
         header = next(reader)  # Assuming the first row is the header
 
         for row in reader:
-            # Parse the date assuming the format is 'MM/DD/YYYY'
-            date = datetime.strptime(row[0], '%m/%d/%Y')
+            # Parse the date assuming the format is 'yyyy-mm-dd'
+            date = datetime.strptime(row[0], '%Y-%m-%d')
             year_month = date.strftime('%Y_%m')
 
             if year_month not in monthly_data:
