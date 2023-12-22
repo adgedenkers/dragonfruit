@@ -1,0 +1,12 @@
+﻿id,script,title,parent_menu_id,active,,
+1,main_menu,main menu,0,1,,
+2,home,home,1,1,,
+3,bathroom,bathroom,1,1,,
+4,food,food,1,1,,
+5,medical_menu,medical,1,1,,
+6,take_my_meds,take my meds,4,1,,shows menu for taking your scheduled medications daily
+7,take_meds,take meds,4,1,,shows menu for taking ad-hoc medicaitons
+,,,,,,
+,,,,,,
+,,,,,,
+7,track_symptoms,symptoms,4,1,,

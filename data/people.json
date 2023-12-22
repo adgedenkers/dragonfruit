@@ -1,0 +1,35 @@
+[
+    {
+        "id": "1",
+        "name": "Adge",
+        "name__last": "Denkers",
+        "name__first": "Adriaan",
+        "name__middle": "Harold",
+        "dob": "1977-11-22T08:45:00-0500",
+        "mother_id": "0",
+        "father_id": "0",
+        "active": "1"
+    },
+    {
+        "id": "2",
+        "name": "Becky",
+        "name__last": "Denkers",
+        "name__first": "Rebecca",
+        "name__middle": "Lydia",
+        "dob": "1978-08-19T14:02:00-0400",
+        "mother_id": "0",
+        "father_id": "0",
+        "active": "1"
+    },
+    {
+        "id": "3",
+        "name": "Fitz",
+        "name__last": "Denkers",
+        "name__first": "Adriaan",
+        "name__middle": "Fitzgerald",
+        "dob": "2010-09-08T14:39:00-0400",
+        "mother_id": "1",
+        "father_id": "2",
+        "active": "1"
+    }
+]
